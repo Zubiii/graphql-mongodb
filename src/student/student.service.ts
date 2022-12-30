@@ -18,4 +18,12 @@ export class StudentService {
     });
     return await this.studentRepository.save(newStudent);
   }
+
+  async getAllStudents(): Promise<Student[]> {
+    return await this.studentRepository.find();
+  }
+
+  async getStudentByID(id): Promise<Student> {
+    return await this.studentRepository.findOne({ where: { id } });
+  }
 }

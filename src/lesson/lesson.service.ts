@@ -16,6 +16,7 @@ export class LessonService {
       name,
       startDate,
       endDate,
+      students: [],
     });
     return await this.lessonRepository.save(lesson);
   }
@@ -24,7 +25,18 @@ export class LessonService {
     return await this.lessonRepository.findOne({ where: { id } });
   }
 
-  async getLessons(): Promise<Lesson[]> {
+  async getAllLessons(): Promise<Lesson[]> {
     return await this.lessonRepository.find();
+  }
+
+  async assignStudentsToLesson(
+    lessonID: string,
+    studentIDs: string[],
+  ): Promise<Lesson> {
+    const lesson = await this.lessonRepository.findOne({
+      where: { id: lessonID },
+    });
+    lesson.students = [...lesson.students, ...studentIDs];
+    return this.lessonRepository.save(lesson);
   }
 }
